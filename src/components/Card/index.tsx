@@ -1,12 +1,12 @@
 import './style.css';
-const Card = () => {
+const Card = ({ data }: any) => {
   return (
     <div className='card'>
-      <img src="https://impaktovisual.com.br/6098-large_default/display-homem-aranha.jpg" className="character-image" alt="Imagem massa do miranha" />
+      <img src={data.image} className="character-image" alt="Imagem massa do miranha" />
       <div>
-        <h2>Peter Park</h2>
-        <p>Terra 216</p>
-        <p>Homem Aranha</p>
+        <h2>{data.name}</h2>
+        <p>{data.location.name}</p>
+        <p>{data.species}</p>
         <span className='user-card'>By: Ivo Soares</span>
       </div>
     </div>
