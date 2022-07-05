@@ -1,0 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,300;6..72,400;6..72,500;6..72,700&family=Roboto:wght@300;400;500;700;900&display=swap');
+
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background-color: #E51B22;
+  font-family: Roboto, Arial, Arial, Helvetica, sans-serif;
+}
+
+html, body {
+  /* view height - tamanho da tela */
+  height: 100vh;
+  width: 100%;
+}
