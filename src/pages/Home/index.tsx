@@ -33,46 +33,6 @@ const Home = () => {
   }, []);
 
   const getAllCharacters = async () => {
-    // const chamadaApi = fetch('https://sheet2api.com/v1/yemWf9fkSuan/characters');
-    // chamadaApi.then((response) => response.json())
-    // .then(data => console.log(data))
-    // .catch(err => console.log(`ERRO`, err));
-
-    // const obj = {
-    //   identity: 'Peter Parker',
-    //   image: 'url_imagem',
-    //   name: 'Peter',
-    //   reality: 'Terra',
-    //   id: '123',
-    //   userName: 'Ivo',
-    //   avatar: 'url_avatar',
-    //   userId: 'id',
-    // }
-
-    // const chamadaApi = await fetch('https://sheet2api.com/v1/yemWf9fkSuan/characters', {
-    //   method: 'post',
-    //   headers: new Headers ({
-    //     'Content-Type': 'application/json'
-    //   }),
-    //   body: JSON.stringify(obj)
-    // });
-    // const data = await chamadaApi.json();
-    // console.log(data);
-    // try {
-    //   const result = await axios.post('https://sheet2api.com/v1/yemWf9fkSuan/characters', obj);
-    //   console.log(result.data);
-    // } catch(err: any) {
-    //   alert(err.message)
-    // }
-
-    const result = await axios.get(`https://rickandmortyapi.com/api/character`);
-    if(!result.data.info.prev) {
-      setPreviousPage(`https://rickandmortyapi.com/api/character`);
-    } else {
-      setPreviousPage(result.data.info.prev);
-    }
-    setNextPage(result.data.info.next);
-    setCharacters(result.data.results);
   }
 
   const callNextPage = async () => {
