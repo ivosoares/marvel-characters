@@ -4,7 +4,7 @@ import Card from '../../components/Card/index';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { findAllService } from '../../services/characterService';
-
+import swall from 'sweetalert';
 interface Characters {
   identity: string;
   image: string;
@@ -35,13 +35,28 @@ const Home = () => {
 
   const getAllCharacters = async () => {
     if(!jwt) {
-      console.log('ERRO: NAO EXISTE O TOKEN FAVOR LOGAR NOVAMENTE')
+      swall({
+        title: 'ERRO!',
+        text: 'Faça o login antes de entrar na página inicial',
+        icon: 'error',
+        timer: 7000,
+      })
       navigate('/login')
     } else {
       const response = await findAllService.allCharacters();
 
-      console.log('Personagens exibidos', response);
-      setCharacters(response.data.results);
+      if(response.status === 204) {
+        swall({
+          title: 'Info',
+          text: 'Não existe personagem cadastrado!',
+          icon: 'info',
+          timer: 7000,
+        })
+      }else {
+        console.log('Personagens exibidos', response);
+        setCharacters(response.data.results);
+      }
+
     }
   }
 

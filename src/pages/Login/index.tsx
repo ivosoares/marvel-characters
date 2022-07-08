@@ -1,10 +1,8 @@
-
-import './style.css'
 import { useState } from 'react';
-import axios from 'axios';
 import { loginService } from '../../services/authService';
 import { useNavigate } from 'react-router-dom';
-
+import { Link } from 'react-router-dom';
+import swall from 'sweetalert';
 
 interface userLoginObj {
   email: string;
@@ -37,6 +35,11 @@ const Login = (props: any) => {
 
     if(jwt) {
       localStorage.setItem('jwtLocalStorage', jwt);
+      swall({
+        title: 'Seja bem vindo',
+        icon: 'success',
+        timer: 3000,
+      })
       navigate('/');
     }
     console.log(response.data);
@@ -51,7 +54,7 @@ const Login = (props: any) => {
           <input type="password" name="password" id="password" placeholder="Digite a sua senha" onChange={handleChangesValues}/>
           <button>Entrar</button>
         </form>
-        <p>Não tem conta ? Cadastre-se</p>
+        <p>Não tem conta ? <Link to="/register" className='link-register'>Cadastre-se</Link></p>
       </div>
     </section>
   )
