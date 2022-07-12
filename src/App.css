@@ -75,3 +75,42 @@ form button {
 form button:hover {
   background-color: #ab1a1e;
 }
+
+.overlay-react-modal {
+  background-color: rgba(0,0,0, 0.6);
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.content-react-modal {
+  width: 100%;
+  max-width: 300px;
+  background-color: #FFF;
+  padding: 3rem;
+  position: relative;
+  border-radius: 0.3rem;
+}
+
+.close-modal-button {
+  background-color: transparent;
+  color: #000;
+  font-size: 1.6rem;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  position: absolute;
+  top: .5rem;
+  right: .5rem;
+  transition: .4s all;
+}
+
+.close-modal-button:hover {
+  color: #e51b22;
+}

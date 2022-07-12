@@ -1,10 +1,11 @@
 import Header from '../../components/Header/index';
 import "./style.css";
 import Card from '../../components/Card/index';
+import swall from 'sweetalert';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { findAllService } from '../../services/characterService';
-import swall from 'sweetalert';
+import { userLoggedService } from '../../services/authService';
 interface Characters {
   identity: string;
   image: string;
@@ -25,13 +26,30 @@ interface User {
 
 const Home = () => {
   const [characters, setCharacters] = useState<Characters[]>([]);
+  const [refreshCharacters, setRefreshCharacters] = useState(false);
+  const [userLogged, setUserLogged] = useState<User>({
+    avatar: '',
+    email: '',
+    name: '',
+    _id: ''
+  });
+
   const navigate = useNavigate();
 
   const jwt = localStorage.getItem('jwtLocalStorage')
 
   useEffect(() => {
+    debugger;
     getAllCharacters();
-  }, []);
+    getUserLogged();
+  }, [refreshCharacters]);
+
+  const updateCharacters = (refreshChar: boolean) => { 
+    setRefreshCharacters(refreshChar);
+    setTimeout(() => {
+      setRefreshCharacters(false);
+    }, 100);
+  }
 
   const getAllCharacters = async () => {
     if(!jwt) {
@@ -60,9 +78,14 @@ const Home = () => {
     }
   }
 
+  const getUserLogged = async () => {
+    const response = await userLoggedService.userLogged();
+    setUserLogged(response.data)
+  }
+
   return (
     <main>
-      <Header/>
+      <Header updateCharacters={updateCharacters}/>
       <section className='list-cards'>
         <div className='card-container'>
           {characters.map((character: Characters, index) => (

@@ -3,8 +3,28 @@ import logo from '../../assets/logo-marvel.png';
 import './style.css';
 
 import { RiLogoutCircleLine } from 'react-icons/ri';
+import { useState } from 'react';
+import Modals from '../Modals';
 
-const Header = () => {
+interface headerProps {
+  updateCharacters: (arg: boolean) => void;
+}
+
+const Header = ({updateCharacters}: headerProps) => {
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  }
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  }
+
+  const onCreate = () => {
+    updateCharacters(true);
+  }
+
   return (
     <header>
       <RiLogoutCircleLine className='header-logout'/>
@@ -14,8 +34,17 @@ const Header = () => {
           <img src={logo} alt="logo da marvel" className='header-logo'/>
           <h1>Personagens</h1>
         </div>
-        <button className='header-button'>Criar Personagem</button>
+        <button className='header-button' onClick={openModal}>Criar Personagem</button>
       </section>
+      <Modals
+        isOpen={isModalOpen}
+        closeModal={closeModal}
+        type="createCharacter"
+        title='Criar Personagem'
+        onChanges={onCreate}
+        btnName="Salvar"
+        id=""
+      />
     </header>
   )
 }
