@@ -24,4 +24,32 @@ const createService = {
     })
 }
 
-export { findAllService, createService }
+const findByIdService = {
+  findCharacterById: (id: string) =>
+    api.get(`/character/byIdPost/${id}`)
+    .then((response: any) => response)
+    .catch((error: any) => {
+      swal({
+        title: "Erro!",
+        text: `${error.message}`,
+        icon: "error",
+        timer: 7000,
+      })
+    })
+}
+
+const updateService = {
+  updateCharacter: (character: object, id: string) =>
+  api.patch(`/character/update/${id}`, character)
+    .then((response: any) => response)
+    .catch((error: any) => {
+      swal({
+        title: "Erro!",
+        text: `${error.message}`,
+        icon: "error",
+        timer: 7000,
+      })
+    })
+}
+
+export { findAllService, createService, findByIdService, updateService }

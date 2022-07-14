@@ -1,10 +1,12 @@
 import "./style.css";
 import React from "react";
 import Modal from "react-modal";
-import { useState } from "react";
+import { useState, useEffect } from 'react';
 import { BiX } from 'react-icons/bi';
-import { createService } from '../../services/characterService';
+import { createService, findByIdService, updateService } from '../../services/characterService';
 import swal from 'sweetalert';
+import { BsFillTrashFill } from "react-icons/bs";
+
 
 Modal.setAppElement('#root');
 
@@ -34,6 +36,7 @@ const Modals = ({
   onChanges,
   id,
 }: modalProps) => {
+  
   const [character, setCharacter] = useState({
     image: "",
     name: "",
@@ -41,12 +44,30 @@ const Modals = ({
     identity: "",
   });
 
+  useEffect(()=> {
+    // chamar a api ou fazer algo
+    type === 'editCharacter' && isOpen ? getCharacterById() : '';
+    type === 'createCharacter' ? setCharacter({
+      image: "",
+      name: "",
+      reality: "",
+      identity: "",
+    }) : console.log('nao faz nada amigao');
+
+  }, [isOpen])
+
   const handleChangeValues = (event: React.ChangeEvent<HTMLInputElement>) => {
     setCharacter((values: characterObj) => ({
       ...values,
       [event.target.name]: event.target.value,
     }));
   };
+
+  //buscar os dados do character por id para popular os campos do meu input
+  const getCharacterById = async () => {
+    const response = await findByIdService.findCharacterById(id);
+    setCharacter(response.data);
+  }
 
   const createCharacter = async () => {
     const response = await createService.createCharacter(character);
@@ -58,13 +79,21 @@ const Modals = ({
         icon: 'success',
         timer: 7000
       })
-      onChanges(true);
+      onChanges(response);
       closeModal();
     }
   }
 
-  const editCharacter = () =>{
-    console.log('edicao');
+  const editCharacter = async () =>{
+    const response = await updateService.updateCharacter(character, id);
+    swal({
+      title: 'Sucesso!',
+      text: `Personagem Atualizado com sucesso!`,
+      icon: 'success',
+      timer: 7000
+    })
+    onChanges(response);
+    closeModal();
   }
 
   const submitFunction = (event: React.FormEvent<HTMLFormElement>) => {
@@ -78,7 +107,6 @@ const Modals = ({
     }
 
   };
-
 
   return (
     <div>
@@ -131,6 +159,12 @@ const Modals = ({
           />
           <button type="submit">{btnName}</button>
         </form>
+        {type === 'editCharacter' ? (
+          <div className="delete-character">
+            <span>ou</span>
+            <button>Apagar <BsFillTrashFill className="trash-icon"/></button>
+          </div>
+        ): ''}
       </Modal>
     </div>
   );

@@ -89,7 +89,7 @@ const Home = () => {
       <section className='list-cards'>
         <div className='card-container'>
           {characters.map((character: Characters, index) => (
-            <Card character={character} key={index} />
+            <Card character={character} updateCharacters={updateCharacters} key={index} userLogged={userLogged}/>
           ))}
         </div>
         <button className='btn-view-more'>Ver mais</button>
