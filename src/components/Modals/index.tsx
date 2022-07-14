@@ -3,7 +3,7 @@ import React from "react";
 import Modal from "react-modal";
 import { useState, useEffect } from 'react';
 import { BiX } from 'react-icons/bi';
-import { createService, findByIdService, updateService } from '../../services/characterService';
+import { createService, findByIdService, updateService, deleteService } from '../../services/characterService';
 import swal from 'sweetalert';
 import { BsFillTrashFill } from "react-icons/bs";
 
@@ -36,7 +36,12 @@ const Modals = ({
   onChanges,
   id,
 }: modalProps) => {
-  
+  const [formDetails, setFormDetails] = useState({
+    id,
+    title,
+    btnName,
+    type
+  })
   const [character, setCharacter] = useState({
     image: "",
     name: "",
@@ -45,6 +50,13 @@ const Modals = ({
   });
 
   useEffect(()=> {
+    setFormDetails({
+      id: id,
+      title: title,
+      btnName: btnName,
+      type: type,
+    })
+
     // chamar a api ou fazer algo
     type === 'editCharacter' && isOpen ? getCharacterById() : '';
     type === 'createCharacter' ? setCharacter({
@@ -73,12 +85,7 @@ const Modals = ({
     const response = await createService.createCharacter(character);
 
     if(response.status === 200) {
-      swal({
-        title: 'Sucesso!',
-        text: 'Personagem criado com sucesso!',
-        icon: 'success',
-        timer: 7000
-      })
+      exibeAlerta('Personagem criado com sucesso!', 'success', 'Sucesso!')
       onChanges(response);
       closeModal();
     }
@@ -86,14 +93,38 @@ const Modals = ({
 
   const editCharacter = async () =>{
     const response = await updateService.updateCharacter(character, id);
-    swal({
-      title: 'Sucesso!',
-      text: `Personagem Atualizado com sucesso!`,
-      icon: 'success',
-      timer: 7000
-    })
+    exibeAlerta('Personagem Atualizado com sucesso!', 'success', 'Sucesso!')
     onChanges(response);
     closeModal();
+  }
+
+  const deleteModalOpen = () => {
+    swal({
+      title: 'Deseja apagar o Personagem ?',
+      icon: 'error',
+      buttons: ["Não", "Sim"]
+    }).then((resp) => {
+      console.log(resp)
+      if(resp) {
+        deleteCharacter();
+      }
+    })
+  }
+
+  const deleteCharacter = async () => {
+    const response = await deleteService.deleteCharacter(id);
+    exibeAlerta('Personagem apagado com sucesso!', 'success', 'sucesso')
+    onChanges(response);
+    closeModal();
+  }
+
+  const exibeAlerta = (text: string, icon: string, title: string) => {
+    swal({
+      title: title,
+      text: text,
+      icon: icon,
+      timer: 7000
+    })
   }
 
   const submitFunction = (event: React.FormEvent<HTMLFormElement>) => {
@@ -123,7 +154,7 @@ const Modals = ({
         >
           <BiX/>
         </button>
-        <h2 className="modal-title">{title}</h2>
+        <h2 className="modal-title">{formDetails.title}</h2>
         <form onSubmit={submitFunction}>
           <input
             type="text"
@@ -157,10 +188,10 @@ const Modals = ({
             onChange={handleChangeValues}
             defaultValue={character.identity}
           />
-          <button type="submit">{btnName}</button>
+          <button type="submit">{formDetails.btnName}</button>
         </form>
         {type === 'editCharacter' ? (
-          <div className="delete-character">
+          <div className="delete-character" onClick={deleteModalOpen}>
             <span>ou</span>
             <button>Apagar <BsFillTrashFill className="trash-icon"/></button>
           </div>

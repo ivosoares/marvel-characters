@@ -52,4 +52,18 @@ const updateService = {
     })
 }
 
-export { findAllService, createService, findByIdService, updateService }
+const deleteService = {
+  deleteCharacter: (id: string) =>
+  api.delete(`/character/delete/${id}`)
+    .then((response: any) => response)
+    .catch((error: any) => {
+      swal({
+        title: "Erro!",
+        text: `${error.message}`,
+        icon: "error",
+        timer: 7000,
+      })
+    })
+}
+
+export { findAllService, createService, findByIdService, updateService, deleteService }

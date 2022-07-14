@@ -39,7 +39,6 @@ const Home = () => {
   const jwt = localStorage.getItem('jwtLocalStorage')
 
   useEffect(() => {
-    debugger;
     getAllCharacters();
     getUserLogged();
   }, [refreshCharacters]);
